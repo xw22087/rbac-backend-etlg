@@ -1,146 +1,167 @@
-# rbac-backend-etlg
-The Back-end Program of ETLG Project
+rbac-backend-etlg
+=================
 
-基于 React + Spring Boot + Spring Security + JWT 的 权限管理系统。
+The Back-end Program of the ETLG Project
 
-# 项目简介
+A permission management system based on React + Spring Boot + Spring Security + JWT.
 
-一个基于RBAC（Role-Based Access Control）模型的通用权限控制系统。用户可以使用无权限要求或权限较低的管理模块，更新个人资料。
+Project Introduction
+====================
 
-**项目演示地址**
+A general permission control system based on the RBAC (Role-Based Access Control) model. Users can use the management module with no or lower permission requirements to update personal information.
 
-http://13.229.229.154:9527/
+**Project Demo Address**
 
-![项目截图](https://img1.imgtp.com/2023/06/12/2fS6fxzd.png)
+[http://13.229.229.154:9527/](http://13.229.229.154:9527/)
 
+Old version repository of this project:
 
-该项目的旧版仓库：
+The old version of the front-end project was not built using a scaffolding tool. It was constructed using a React native project + Ant Design.
 
-旧版前端项目未使用脚手架，使用 React 原生项目 + Ant Design 进行搭建。
+Back-end: [https://github.com/imyuanxiao/rbac-backend-old](https://github.com/imyuanxiao/rbac-backend-old)
 
-后端：https://github.com/imyuanxiao/rbac-backend-old
+Technology Selection
+====================
 
-# 技术选型
+Back-end
+--------
 
-## 后端
+*   Java Spring Boot
+*   MySQL database
+*   Redis database
+*   MyBatis-Plus and MyBatis X auto-generation
+*   Spring Security for access control
+*   JWT token authentication
+*   Swagger for API documentation generation
+*   Utilizing libraries like Hutool
 
-- Java Spring Boot
-- MySQL 数据库
-- Redis 数据库
-- MyBatis-Plus 及 MyBatis X 自动生成
-- Spring Security 权限控制
-- JWT token 鉴权
-- Swagger 接口文档生成
-- Hutool等工具库
+Implemented Features
+====================
 
-# 已实现
+Back-end
+--------
 
-## 后端
+*   Database design
+*   Parameter validation using annotations
+    *   Group validation
+*   Configuration of Swagger API documentation
+*   Unified response structure
+    *   Customized data response structure
+    *   Custom business response codes
+*   Global exception handling
+    *   Custom exception classes
+    *   Global exception handling class
+*   Custom annotations
+    *   Extending error codes and response messages with `@ExceptionCode`
+    *   Bypassing unified response structure with `@NotResponseBody`
+*   Configuration of JWT + Redis
+    *   Building JWTUtil using Hutool
+    *   Custom Redis utility class
+*   Managing API permissions through annotations (operational permissions)
+    *   Permission annotation `@Auth`
+    *   Automatically adding permissions to the database through API scanning
+*   Custom SQL interceptor (data permission)
+    *   MyPaginationInterceptor
+*   Spring Security login authentication
+    *   Custom UserDetailService
+    *   Login filter LoginFilter
+    *   Authorization filter AuthFilter
+    *   Authorization rule source (SecurityMetadataSource)
+    *   Custom access decision manager (AccessDecisionManager)
+    *   Custom authorization error handler (AccessDeniedHandler)
+    *   Custom authentication exception handler class (AuthenticationEntryPoint)
+    *   Configuration classes
+*   Various functional modules
 
-- 数据库设计
-- 通过注解进行参数校验
-  - 分组校验
-- 配置 swagger 接口文档
-- 统一响应体
-  - 自定义数据统一响应体
-  - 自定义业务响应码
-- 全局异常处理
-  - 自定义异常类
-  - 全局异常处理类
-- 自定义注解
-  - 拓展错误码和响应信息 @ExceptionCode
-  - 绕过统一响应体注解 @NotResponseBody
-- 配置 JWT + Redis
-  - 使用 hutools 构建 JWTUtil
-  - 自定义 Redis 工具类
-- 通过注解管理接口权限（操作权限）
-  - 权限注解 @Auth
-  - 通过接口扫描自动添加权限至数据库
-- 自定义 sql 拦截器（数据权限）
-  - MyPaginationInterceptor
-- spring security 登录认证
-  - 自定义UserDetailService
-  - 登录过滤器 LoginFilter
-  - 鉴权过滤器 AuthFilter
-  - 鉴权规则源（SecurityMetadataSource）
-  - 自定义访问决策管理器（AccessDecisionManager）
-  - 自定义授权错误处理器（AccessDeniedHandler）
-  - 自定义认证异常处理类（AuthenticationEntryPoint）
-  - 配置类
-- 各业务功能模块
+Planned Features
+================
 
-# 待实现
+1.  WebSockets message notification
+2.  User login status (online, offline, locked) heartbeat monitoring
 
-1. WebStock消息通知
-2. 用户登录状态（在线、离线、锁定）心跳监控
+Project Deployment
+==================
 
-# 项目部署
+Server: AWS EC2
 
-服务器： AWS EC2
+Operating System: AWS Linux 2023
 
-系统：AWS Linux 2023
-
-## 环境设置
+Environment Setup
+-----------------
 
 ### Redis
 
-1. 查找软件
+1.  Search for software
 
-```
+bash
+
+```bash
 sudo yum search "redis"
 ```
 
-2. 安装Redis6
+2.  Install Redis 6
 
-```
+bash
+
+```bash
 sudo yum install redis6.x86_64
-或者
-udo dnf install -y redis6
+# or
+sudo dnf install -y redis6
 ```
 
-3. 启动Redis6
+3.  Start Redis 6
 
-```
+bash
+
+```bash
 sudo systemctl start redis6
 sudo systemctl enable redis6
 ```
 
-4. 修改配置文件，设置密码
+4.  Modify configuration file and set password
+
+bash
 
 ```bash
 sudo vim /etc/redis6/redis6.conf
 ```
 
-```
-# 设置密码
+bash
+
+```bash
+# Set password
 requirepass your_password
 
-# 仅用于测试，可以不改，允许所有IP访问
+# Allow all IPs for testing purposes
 bind 0.0.0.0
 ```
 
-5. 重启服务器
+5.  Restart server
+
+bash
 
 ```bash
 sudo systemctl restart redis6
 ```
 
-6. 查看运行进程和端口
+6.  View running processes and ports
 
-```
+bash
+
+```bash
 ps aux | grep redis
-sudo lsof -i -P -n | grep <查到的PID>
+sudo lsof -i -P -n | grep <PID>
 ```
 
-### Mysql
+### MySQL
 
-**参考文档：AWS linux 2023 安装mysql8**
+**Reference document: Install MySQL 8 on AWS Linux**
 
-[https://awswithatiq.com/how-to-install-mysql-on-amazon-linux-2023-fedora-version/#Prerequisites](https://awswithatiq.com/how-to-install-mysql-on-amazon-linux-2023-fedora-version/#Prerequisites)
+1.  Run the following commands in the terminal
 
-1. 终端运行以下命令
+bash
 
-```
+```bash
 sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm 
 sudo ls -lrt
 sudo dnf install mysql80-community-release-el9-1.noarch.rpm
@@ -150,128 +171,89 @@ sudo systemctl start mysqld
 sudo mysql -V
 ```
 
-2. 进入mysql，设置root密码为空，运行远程登录
+2.  Enter MySQL, set the root password to empty, and enable remote login
+
+sql
 
 ```sql
 mysql -u root -p
 use mysql;
-# 设置密码为空
+# Set password to empty
 UPDATE mysql.user SET authentication_string='' WHERE user='root' and host='localhost';
-# 运行远程登录
+# Enable remote login
 UPDATE mysql.user SET host = '%' WHERE user = 'root';
 FLUSH PRIVILEGES;
 ```
 
-如果进入mysql提示需要输入密码，先去设置，在my.cnf增加：skip-grant-tables
+If entering MySQL prompts for a password, first set it. Add `skip-grant-tables` to `my.cnf`.
 
-```
+bash
+
+```bash
 sudo vi /etc/my.cnf
 ```
 
-3. 退出mysql，运行脚本设置root密码
+3.  Exit MySQL, run the script to set the root password
 
-```
+bash
+
+```bash
 sudo mysql_secure_installation
 ```
 
-4. 查看运行进程和端口
+4.  View running processes and ports
+
+sql
 
 ```sql
 ps aux | grep mysql
-sudo lsof -i -P -n | grep <查到的PID>
+sudo lsof -i -P -n | grep <PID>
 ```
 
 ### Java
 
-参考文档：
+Reference document:
 
-[Amazon Linux EC2 上的先决条件 - Amazon Neptune](https://docs.aws.amazon.com/zh_cn/neptune/latest/userguide/iam-auth-connect-prerq.html)
+[Prerequisites on Amazon Linux EC2 - Amazon Neptune](https://docs.aws.amazon.com/neptune/latest/userguide/iam-auth-connect-prerq.html)
 
-安装java8
+Install Java 8
 
-```
+bash
+
+```bash
 sudo yum install java-1.8.0-devel
 ```
 
-### nginx
+### Nginx
 
-1. 安装nginx
+1.  Install Nginx
 
-```
+bash
+
+```bash
 sudo yum install nginx -y
 ```
 
-2. 启动nginx
+2.  Start Nginx
 
-```
+bash
+
+```bash
 sudo service nginx start
 ```
 
-## 部署后端
+Deploying the Back-end
+----------------------
 
-1. IDEA里使用maven的package命令将项目打包成jar包（注意在打包前配置端口、数据库密码等）。
+1.  Use the Maven package command in IDEA to package the project into a JAR file (configure ports, database passwords, etc. before packaging).
+    
+2.  Upload the JAR file to the server and run it
+    
 
-2. jar包上传至服务器，运行
+bash
 
-```
+```bash
 nohup java -jar your-jar-file.jar > yourJarLog.txt &
 ```
 
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/29364238/1686599743947-c8a01ec2-39e2-48da-88a2-0c5aaac93de9.png#averageHue=%23233e52&clientId=u852bb88a-1acd-4&from=paste&height=60&id=u1dbd297f&originHeight=90&originWidth=892&originalType=binary&ratio=1.5&rotation=0&showTitle=false&size=77404&status=done&style=none&taskId=u082477a1-1a73-43f3-8a61-2d936b9f3b8&title=&width=594.6666666666666)
-
-上图的1455266即为项目进程查看项目端口，默认为8080
-
-```
-sudo lsof -i -P -n | grep 1455266
-```
-
-## 部署前端
-
-1. 打包成dist文件
-2. 上传至服务器
-3. 配置nginx
-
-```
-server {
-    listen 8000;
-    # server_name your.domain.com;
-
-    root /var/www/your-project;
-    index index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    location ^~ /assets/ {
-        gzip_static on;
-        expires max;
-        add_header Cache-Control public;
-    }
-    
-    # 此处是配置反向代理，将前端请求转发到后端
-    location /api/ {
-        proxy_pass http://localhost:8080/;
-        proxy_set_header Host $host;
-    }
-    
-    error_page 500 502 503 504 /500.html;
-    client_max_body_size 20M;
-    keepalive_timeout 10;
-}
-```
-
-4. 确保nginx有该路径的访问权限
-
-```
-sudo chown -R nginx:nginx /var/www
-sudo chmod -R 755 /var/www
-```
-
-5. 服务器开放9527端口访问
-
-这样就可以通过IP地址+端口号进行前端页面的访问了
-
-
-
-
+In the above image, 1455266 is the process ID (PID) of the project, which is the default
